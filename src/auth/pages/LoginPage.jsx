@@ -63,7 +63,7 @@ export const LoginPage = () => {
               to={'/auth/register'}
               component={RouterLink}
             >
-              Crear una cuenta
+              Create an account
             </Link>
           </Grid>
         </Grid>
