@@ -1,6 +1,7 @@
 import { SaveOutlined } from '@mui/icons-material'
 import { Button, Grid, TextField, Typography } from '@mui/material'
 import React from 'react'
+import { ImageGallery } from '../components'
 
 export const NoteView = () => {
   return (
@@ -12,7 +13,7 @@ export const NoteView = () => {
       sx={{ mb: 1 }}
     >
       <Grid>
-        <Typography fontSize={39} fontWeight={'light'}>April 27th, 2025</Typography>
+        <Typography fontSize={39} fontWeight='light'>April 27th, 2025</Typography>
       </Grid>
       <Grid>
         <Button color='primary' sx={{ padding: 2 }}>
@@ -38,7 +39,7 @@ export const NoteView = () => {
           minRows={5}
         />
       </Grid>
-      {/* Image Gallery */}
+      <ImageGallery />
     </Grid>
   )
 }
