@@ -21,7 +21,7 @@ export const NoteView = () => {
           Save
         </Button>
       </Grid>
-      <Grid container item size={12}>
+      <Grid container size={12}>
         <TextField
           type='text'
           variant='filled'
