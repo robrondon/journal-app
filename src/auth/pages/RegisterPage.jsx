@@ -3,14 +3,39 @@ import { Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const formData = {
-  displayName: 'Rob Rondon',
-  email: 'robrondon@aptugo.com',
-  password: '123456'
+  displayName: '',
+  email: '',
+  password: ''
+}
+
+const formValidations = {
+  displayName: [
+    [(value) => value.trim().length > 1, 'Full name is required.']
+  ],
+  email: [
+    [(value) => emailRegex.test(value), 'Invalid email address.']
+  ],
+  password: [
+    [(value) => value.trim().length >= 6, 'Password must be have at least 6 characters.'],
+    [(value) => /[A-Z]/.test(value), 'Password must contain at least one uppercase letter.'],
+    [(value) => /\d/.test(value), 'Password must contain at least one number.'],
+    [(value) => /[^A-Za-z0-9]/.test(value), 'Password must contain a special character.'],
+  ]
 }
 
 export const RegisterPage = () => {
-  const { displayName, email, password, onInputChange } = useForm(formData)
+  const {
+    displayName,
+    email,
+    password,
+    onInputChange,
+    formErrors,
+    onInputBlur,
+    touchedFields
+  } = useForm(formData, formValidations)
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -32,6 +57,9 @@ export const RegisterPage = () => {
               name='displayName'
               onChange={onInputChange}
               value={displayName}
+              error={!!formErrors.displayName && !!touchedFields.displayName}
+              helperText={touchedFields.displayName && formErrors.displayName}
+              onBlur={onInputBlur}
             />
           </Grid>
           <Grid
@@ -46,6 +74,9 @@ export const RegisterPage = () => {
               name='email'
               onChange={onInputChange}
               value={email}
+              error={!!formErrors.email && !!touchedFields.email}
+              helperText={touchedFields.email && formErrors.email}
+              onBlur={onInputBlur}
             />
           </Grid>
 
@@ -61,6 +92,9 @@ export const RegisterPage = () => {
               name='password'
               onChange={onInputChange}
               value={password}
+              error={!!formErrors.password && !!touchedFields.password}
+              helperText={touchedFields.password && formErrors.password}
+              onBlur={onInputBlur}
             />
           </Grid>
 
