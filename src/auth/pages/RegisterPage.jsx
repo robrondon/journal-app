@@ -2,6 +2,7 @@ import { Link as RouterLink } from 'react-router'
 import { Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
+import { useState } from 'react';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -21,6 +22,7 @@ const formValidations = {
   password: [
     [(value) => value.trim().length >= 6, 'Password must be have at least 6 characters.'],
     [(value) => /[A-Z]/.test(value), 'Password must contain at least one uppercase letter.'],
+    [(value) => /[a-z]/.test(value), 'Password must contain at least one lowercase letter.'],
     [(value) => /\d/.test(value), 'Password must contain at least one number.'],
     [(value) => /[^A-Za-z0-9]/.test(value), 'Password must contain a special character.'],
   ]
@@ -33,14 +35,20 @@ export const RegisterPage = () => {
     password,
     onInputChange,
     formErrors,
+    isFormValid,
     onInputBlur,
     touchedFields
   } = useForm(formData, formValidations)
 
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
   const onSubmit = (e) => {
     e.preventDefault()
+    setFormSubmitted(true)
+    if (!isFormValid) return
     console.log({ displayName, email, password })
   }
+
   return (
     <AuthLayout title='Register'>
       <form onSubmit={onSubmit}>
@@ -57,8 +65,8 @@ export const RegisterPage = () => {
               name='displayName'
               onChange={onInputChange}
               value={displayName}
-              error={!!formErrors.displayName && !!touchedFields.displayName}
-              helperText={touchedFields.displayName && formErrors.displayName}
+              error={!!formErrors.displayName && (!!touchedFields.displayName || formSubmitted)}
+              helperText={(touchedFields.displayName || formSubmitted) && formErrors.displayName}
               onBlur={onInputBlur}
             />
           </Grid>
@@ -74,8 +82,8 @@ export const RegisterPage = () => {
               name='email'
               onChange={onInputChange}
               value={email}
-              error={!!formErrors.email && !!touchedFields.email}
-              helperText={touchedFields.email && formErrors.email}
+              error={!!formErrors.email && (!!touchedFields.email || formSubmitted)}
+              helperText={(touchedFields.email || formSubmitted) && formErrors.email}
               onBlur={onInputBlur}
             />
           </Grid>
@@ -92,8 +100,8 @@ export const RegisterPage = () => {
               name='password'
               onChange={onInputChange}
               value={password}
-              error={!!formErrors.password && !!touchedFields.password}
-              helperText={touchedFields.password && formErrors.password}
+              error={!!formErrors.password && (!!touchedFields.password || formSubmitted)}
+              helperText={(touchedFields.password || formSubmitted) && formErrors.password}
               onBlur={onInputBlur}
             />
           </Grid>
