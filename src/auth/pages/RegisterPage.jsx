@@ -1,10 +1,10 @@
 import { Link as RouterLink } from 'react-router'
-import { Button, Grid, Link, TextField, Typography } from '@mui/material'
+import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { startUserRegister } from '../../store/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -31,7 +31,9 @@ const formValidations = {
 }
 
 export const RegisterPage = () => {
+  const { status, errorMessage } = useSelector(state => state.auth)
   const dispatch = useDispatch()
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const {
     displayName,
     email,
@@ -43,7 +45,8 @@ export const RegisterPage = () => {
     touchedFields
   } = useForm(formData, formValidations)
 
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const isCheckingAuthentication = useMemo(() => status === 'checking', [status])
+
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -115,8 +118,16 @@ export const RegisterPage = () => {
             spacing={2}
             sx={{ mb: 2, mt: 2 }}
           >
+            {errorMessage && (
+              <Grid size={{ xs: 12, sm: 12 }}>
+                <Alert severity='error'>
+                  {errorMessage}
+                </Alert>
+              </Grid>
+            )}
             <Grid size={{ xs: 12, sm: 12 }}>
               <Button
+                disabled={isCheckingAuthentication}
                 variant='contained'
                 fullWidth
                 type='submit'

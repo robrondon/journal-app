@@ -47,7 +47,9 @@ export const registerUserWithEmailPassword = async ({ email, password, displayNa
     }
   } catch (error) {
     const errorCode = error.code;
-    const errorMessage = error.message;
+    let errorMessage = error.message;
+
+    if (errorCode === 'auth/email-already-in-use') errorMessage = 'The user already exists'
 
     return {
       ok: false,
