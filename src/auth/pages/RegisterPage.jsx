@@ -3,6 +3,8 @@ import { Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
 import { useState } from 'react';
+import { startUserRegister } from '../../store/auth';
+import { useDispatch } from 'react-redux';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -29,6 +31,7 @@ const formValidations = {
 }
 
 export const RegisterPage = () => {
+  const dispatch = useDispatch()
   const {
     displayName,
     email,
@@ -46,7 +49,7 @@ export const RegisterPage = () => {
     e.preventDefault()
     setFormSubmitted(true)
     if (!isFormValid) return
-    console.log({ displayName, email, password })
+    dispatch(startUserRegister({ displayName, email, password }))
   }
 
   return (
