@@ -118,7 +118,7 @@ export const RegisterPage = () => {
             spacing={2}
             sx={{ mb: 2, mt: 2 }}
           >
-            {errorMessage && (
+            {(errorMessage && formSubmitted) && (
               <Grid size={{ xs: 12, sm: 12 }}>
                 <Alert severity='error'>
                   {errorMessage}
