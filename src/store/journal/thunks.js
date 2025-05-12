@@ -1,6 +1,7 @@
-import { collection, doc, getDocs, setDoc } from "firebase/firestore/lite"
+
 import { FirebaseDB } from "../../firebase/config"
 import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes } from "./"
+import { createEmptyNote, loadNotes } from "./helpers"
 
 export const startNewNote = () => {
   return async (dispatch, getState) => {
@@ -9,16 +10,7 @@ export const startNewNote = () => {
 
     const { uid } = getState().auth
 
-    const newNote = {
-      title: '',
-      body: '',
-      date: new Date().getTime()
-    }
-
-    const newDoc = doc(collection(FirebaseDB, `${uid}/journal/notes`))
-    await setDoc(newDoc, newNote)
-
-    newNote.id = newDoc.id
+    const newNote = await createEmptyNote(uid)
 
     dispatch(addNewEmptyNote(newNote))
     dispatch(setActiveNote(newNote))
@@ -28,13 +20,8 @@ export const startNewNote = () => {
 export const startLoadingNotes = () => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth
-    if (!uid) throw new Error('The user uid does not exist')
 
-    const collectionRef = collection(FirebaseDB, `${uid}/journal/notes`)
-    const docs = await getDocs(collectionRef)
-
-    const notes = []
-    docs.forEach(doc => notes.push({ id: doc.id, ...doc.data() }))
+    const notes = await loadNotes(uid)
 
     dispatch(setNotes(notes))
   }
