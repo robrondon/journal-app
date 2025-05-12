@@ -1,5 +1,3 @@
-
-import { FirebaseDB } from "../../firebase/config"
 import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes } from "./"
 import { createEmptyNote, loadNotes } from "./helpers"
 
