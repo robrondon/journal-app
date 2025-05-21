@@ -99,7 +99,7 @@ export const NoteView = () => {
           onChange={onInputChange}
         />
       </Grid>
-      <ImageGallery />
+      <ImageGallery images={activeNote.imageUrls} />
     </Grid>
   )
 }
