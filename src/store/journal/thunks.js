@@ -1,5 +1,5 @@
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setSaving, updateNote } from "./"
-import { createEmptyNote, loadNotes, saveNote } from "./helpers"
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from "./"
+import { createEmptyNote, fileUpload, loadNotes, saveNote } from "./helpers"
 
 export const startNewNote = () => {
   return async (dispatch, getState) => {
@@ -36,5 +36,21 @@ export const startSaveNote = () => {
     await saveNote(uid, activeNote)
 
     dispatch(updateNote(activeNote))
+  }
+}
+
+export const startUploadingFiles = (files = []) => {
+  return async (dispatch) => {
+    dispatch(setSaving())
+
+    const fileUploadPromises = []
+
+    for (const file of files) {
+      fileUploadPromises.push(fileUpload(file))
+    }
+
+    const photosURls = await Promise.all(fileUploadPromises)
+
+    dispatch(setPhotosToActiveNote(photosURls))
   }
 }
