@@ -23,12 +23,14 @@ export const LoginPage = () => {
   const onSubmit = (e) => {
     e.preventDefault()
     setFormSubmitted(true)
+    console.log('que onda?')
     dispatch(startUserLogin({ email, password }))
   }
 
   const onGoogleSignIn = () => {
     dispatch(startGoogleSignIn())
   }
+  console.log({ formSubmitted, errorMessage })
 
   return (
     <AuthLayout title='Login'>
@@ -74,7 +76,7 @@ export const LoginPage = () => {
             spacing={2}
             sx={{ mb: 2, mt: 2 }}
           >
-            {(errorMessage && formSubmitted) && (
+            {errorMessage && (
               <Grid size={{ xs: 12, sm: 12 }}>
                 <Alert severity='error'>
                   {errorMessage}
