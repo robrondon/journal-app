@@ -7,7 +7,8 @@ export const createEmptyNote = async (uid = '') => {
   const newNote = {
     title: '',
     body: '',
-    date: new Date().getTime()
+    date: new Date().getTime(),
+    imageUrls: []
   }
 
   const newDoc = doc(collection(FirebaseDB, `${uid}/journal/notes`))

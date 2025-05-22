@@ -7,13 +7,6 @@ export const journalSlice = createSlice({
     messageSaved: '',
     notes: [],
     activeNote: null,
-    // activeNote: {
-    //   id: '123ABC',
-    //   title: '',
-    //   body: '',
-    //   date: 1234567,
-    //   imageUrls: []
-    // }
   },
   reducers: {
     savingNewNote: (state) => {
