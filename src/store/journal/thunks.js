@@ -1,5 +1,5 @@
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from "./"
-import { createEmptyNote, fileUpload, loadNotes, saveNote } from "./helpers"
+import { addNewEmptyNote, deleteNoteById, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from "./"
+import { createEmptyNote, deleteNote, fileUpload, loadNotes, saveNote } from "./helpers"
 
 export const startNewNote = () => {
   return async (dispatch, getState) => {
@@ -52,5 +52,21 @@ export const startUploadingFiles = (files = []) => {
     const photosURls = await Promise.all(fileUploadPromises)
 
     dispatch(setPhotosToActiveNote(photosURls))
+  }
+}
+
+export const startDeletingNote = () => {
+  return async (dispatch, getState) => {
+    dispatch(setSaving())
+
+    const { uid } = getState().auth
+    const { activeNote } = getState().journal
+
+    await deleteNote(uid, activeNote.id)
+
+    console.log('vamos a borrar la nota', uid, activeNote)
+
+    dispatch(deleteNoteById(activeNote.id))
+
   }
 }
